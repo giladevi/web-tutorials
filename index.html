@@ -1,0 +1,191 @@
+<html>
+<head>
+	<title>html tutorials</title>
+	<link rel="stylesheet" type="text/css" href="bootstrap.css"/>
+	<link rel="stylesheet" type="text/css" href="styles.css"/>
+	<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+</head>
+<body>
+	<div id="examples">
+		<a href="html example bear.html">
+			html example bear
+		</a>
+		&nbsp;
+		<a href="table example.html">
+			table example
+		</a>
+		&nbsp;
+		<a href="forms example.html">
+			forms example
+		</a>
+		&nbsp;
+		<a href="semantics.html" class="red_link">
+			semantics
+		</a>
+	</div>
+	<hr></hr>
+	<div class="container">
+		<div class="row">
+			<!--a grid of 12 columns so we split to 6 and 6 -->
+			<div class="col-md-6 thin_border">
+				<h1 id="title" onclick="alert('this is a javascript alert thingy');"> my html tutorials</h1>
+			</div>
+			<div class="col-md-6 thin_border">
+				<p class="gap_below" ><span id="here" class="indent" onclick="console.log('hello to the console');">click</span> on the big picture to stop the slideshow</p>
+			</div>
+			<div class="col-md-2">
+				<h2 id="clickable" onclick="haveFun(); count();">
+				click me
+				</h2>
+			</div>
+			<div class="col-md-4"></div>
+			<div class="col-md-6">
+				<h1>you clicked <span id="number"></span> times!</h1>
+			</div>
+			
+		</div>
+		<hr></hr>
+		<div class="row">
+			<div class="col-md-4">
+				<img id="img1" class="crop-img" src="img_1.jpg" alt="sunrise"/>
+			</div>
+			<div class="col-md-4">
+				<img id="img2" class="crop-img" src="img_2.jpg" alt="sea"/>
+			</div>
+			<div class="col-md-4">
+				<img id="img3" class="crop-img" src="img_3.jpg" alt="rope"/>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-1">
+				<button id="backward">&lt;</button>
+			</div>	
+			<div class="col-md-10">
+				<img id="big_img" class="large-img" src="img_1.jpg" alt="sunrise"/>
+			</div>
+			<div class="col-md-1">
+				<button id="forward">&gt;</button>
+			</div>
+		</div>
+		<hr></hr>
+		<h1 id="clickWays">click on the sides of the picture!</h1>
+		<div class="row">
+			<div class="col-md-3">
+				<!-- list-group and scrollable are both bootstrap classes-->
+				<ul class="list-group scrollable" id="tutorials list">
+					<li id="tut1" class="list-group-item tutorial-thumbnail">sunrise</li>
+					<li id="tut2" class="list-group-item tutorial-thumbnail">sea</li>
+					<li id="tut3" class="list-group-item tutorial-thumbnail">rope</li>
+					
+				</ul>
+			</div>
+			<div class="col-md-9">
+					<div class="well" id="mainViewer">
+						<img id="mainViewerImage" class="large-img" src="img_1.jpg" alt="sunrise"/>
+					</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+<!--the script of the click me button-->
+<script type="text/javascript">
+	function haveFun(){
+		$("#clickable").html('have fun!');
+		$("#clickable").click(function(){
+			$("#clickable").html('click me');
+			$("#clickable").off('click');
+		});
+	};
+</script>
+
+<!--the script of the slideshow-->
+<script>
+	var paused= false;
+	
+	<!--puts the source of the small image as the big image when you click it-->
+	$(".crop-img").click(function(){
+		$("#big_img").attr('src',
+			$(this).attr('src'));
+	});
+	
+	var cnt=1;
+	$("#img"+cnt).click();
+	
+	<!--when you press the < button-->
+	$("#backward").click(function(){
+		cnt=cnt-1;
+		if(cnt<1){
+			cnt=3;
+		}
+		$("#img"+cnt).click();
+	});
+	
+	<!-- when you press the > button-->
+	$("#forward").click(function(){
+		cnt=cnt+1;
+		if(cnt>3){
+			cnt=1;
+		}
+		$("#img"+cnt).click();
+	});
+	
+	<!--when you press the big picture you pause/unpause the slide show-->
+	$("#big_img").click(function(){
+		paused=!paused;
+	});
+	
+	<!--click forward every 3000 iliseconds-->
+	setInterval(function(){
+		if(!paused){
+			$("#forward").click();
+		};
+	},2000);
+		
+	
+			
+</script>
+
+<!--the script to change the number by counter-->
+<script type="text/javascript">
+	var counter=0;
+	$("#number").html(counter);
+	function count(){
+		counter=counter+1;
+		$("#number").html(counter);
+	}
+</script>	
+
+<!--the script of the thumbnails-->
+<script>
+	var counter=1;
+	$(".tutorial-thumbnail").click(function(){
+		<!--this gets the id of the clicked element-->
+		var id=$(this).attr("id");
+		<!--gets the last letter in the id and converts to a number-->
+		counter=parseInt(id.slice(-1));
+		<!-- the main viewer gets the src of img with the id number of the clicked element->
+		$("#mainViewerImage").attr('src', $("#img"+counter).attr('src'));
+		});
+		
+	$("#tut"+counter).click();
+	$("#mainViewer").click(function(event){
+		<!--goes backward if you press the left side of the window and forward if you press the right side-->
+		if(event.offsetX < $(this).width()*0.3){	
+		counter=counter-1;
+		}
+		<!--else goes forward-->
+		else{
+			counter=counter+1;
+		}
+		if(counter < 1){
+			counter=1;
+		}
+		<!--if we reached over the end lower the counter by 1-->
+		if(counter >= $(".tutorial-thumbnail").length+1){
+			counter=$(".tutorial-thumbnail").length;
+		}
+		$("#tut"+counter).click();
+	});
+</script>
+</html>
